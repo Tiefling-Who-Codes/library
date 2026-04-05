@@ -3,24 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumina | Login</title>
+    <title>MER Library | Login</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="auth-page">
     <div class="auth-card">
-        <h1>Lumina Library</h1>
-        <p>Sign in to your account</p>
+        <h1 style="color: #4f46e5; margin-bottom: 0;">MER</h1>
+        <h2 style="margin-top: 0; font-weight: 300;">Library Portal</h2>
         <div class="input-group">
-            <input type="email" id="email" placeholder="Email Address">
+            <input type="email" id="email" placeholder="Staff or Student Email">
             <input type="password" id="password" placeholder="Password">
         </div>
         <button id="login-btn">Login</button>
-        <button id="signup-btn" class="secondary">Create Student Account</button>
+        <p id="error-msg" style="color: #ef4444; font-size: 0.8rem; margin-top: 10px;"></p>
+        <div class="footer-note">Contact administration for account access.</div>
     </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDywAKfnmV6gnXyCsF1mjrE5THdV7l8O_M",
@@ -33,20 +34,13 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app);
 
         document.getElementById('login-btn').onclick = () => {
-            signInWithEmailAndPassword(auth, email.value, password.value)
+            const e = document.getElementById('email').value;
+            const p = document.getElementById('password').value;
+            signInWithEmailAndPassword(auth, e, p)
                 .then(() => window.location.href = "dashboard.html")
-                .catch(e => alert(e.message));
-        };
-
-        document.getElementById('signup-btn').onclick = async () => {
-            try {
-                const cred = await createUserWithEmailAndPassword(auth, email.value, password.value);
-                await setDoc(doc(db, "users", cred.user.uid), { email: email.value, role: "student" });
-                window.location.href = "dashboard.html";
-            } catch(e) { alert(e.message); }
+                .catch(err => { document.getElementById('error-msg').innerText = "Invalid credentials."; });
         };
     </script>
 </body>

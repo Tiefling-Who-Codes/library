@@ -2,53 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Lumina | Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MER Library | Dashboard</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@ericblade/quagga2/dist/quagga.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
-        <span class="logo">Lumina Library</span>
-        <div class="nav-right">
-            <span id="user-info"></span>
-            <button id="logout-btn" class="danger-btn">Logout</button>
-        </div>
+        <span class="logo">MER LIBRARY</span>
+        <button id="logout-btn" class="danger-btn">Logout</button>
     </nav>
 
     <main class="container">
-        <div id="admin-view" class="role-section hidden">
-            <div class="card">
-                <h3>User Management</h3>
-                <table id="user-table">
-                    <thead><tr><th>Email</th><th>Role</th><th>Action</th></tr></thead>
-                    <tbody id="user-list"></tbody>
-                </table>
-            </div>
-        </div>
-
         <div id="librarian-view" class="role-section hidden">
             <div class="grid-2">
                 <div class="card">
-                    <h3>Add Book</h3>
-                    <input type="text" id="isbn-input" placeholder="ISBN">
-                    <button id="fetch-btn">Find Book</button>
-                    <div id="preview" class="hidden">
-                        <img id="p-img" src="">
-                        <p id="p-title"></p>
-                        <button id="add-final">Add to Catalog</button>
+                    <h3>📚 Add to Catalog</h3>
+                    <div id="scanner-container" class="hidden"></div>
+                    <button id="start-scan" class="secondary" style="margin-bottom:10px;">📷 Scan Barcode</button>
+                    <input type="text" id="isbn-input" placeholder="ISBN Number">
+                    <button id="fetch-btn">Check Book Info</button>
+                    
+                    <div id="preview" class="hidden" style="margin-top:15px; text-align:center;">
+                        <img id="p-img" src="" style="width:70px; border-radius:4px;">
+                        <p id="p-title" style="font-size:0.9rem; margin:5px 0;"></p>
+                        <button id="add-final" class="success-btn">Add to MER Library</button>
                     </div>
                 </div>
+
                 <div class="card">
-                    <h3>Issue Loan</h3>
-                    <input type="text" id="l-isbn" placeholder="ISBN">
+                    <h3>📖 Issue Loan</h3>
+                    <input type="text" id="l-isbn" placeholder="Book ISBN">
                     <input type="text" id="l-email" placeholder="Student Email">
-                    <button id="loan-btn">Confirm Loan</button>
+                    <button id="loan-btn" class="success-btn">Confirm Loan</button>
                 </div>
             </div>
         </div>
 
         <div id="student-view" class="role-section">
-            <h3>Current Borrowings</h3>
-            <div id="book-list" class="book-grid"></div>
+            <h3 style="margin-top:0;">My Borrowed Books</h3>
+            <div id="book-list" class="book-grid">
+                <p>Checking for loans...</p>
+            </div>
         </div>
     </main>
 
