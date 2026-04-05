@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina | Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-page">
+    <div class="auth-card">
+        <h1>Lumina Library</h1>
+        <p>Sign in to your account</p>
+        <div class="input-group">
+            <input type="email" id="email" placeholder="Email Address">
+            <input type="password" id="password" placeholder="Password">
+        </div>
+        <button id="login-btn">Login</button>
+        <button id="signup-btn" class="secondary">Create Student Account</button>
+    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDywAKfnmV6gnXyCsF1mjrE5THdV7l8O_M",
+            authDomain: "library-c5b1f.firebaseapp.com",
+            projectId: "library-c5b1f",
+            storageBucket: "library-c5b1f.firebasestorage.app",
+            messagingSenderId: "301737185007",
+            appId: "1:301737185007:web:3806e6949d24817a16d51a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        document.getElementById('login-btn').onclick = () => {
+            signInWithEmailAndPassword(auth, email.value, password.value)
+                .then(() => window.location.href = "dashboard.html")
+                .catch(e => alert(e.message));
+        };
+
+        document.getElementById('signup-btn').onclick = async () => {
+            try {
+                const cred = await createUserWithEmailAndPassword(auth, email.value, password.value);
+                await setDoc(doc(db, "users", cred.user.uid), { email: email.value, role: "student" });
+                window.location.href = "dashboard.html";
+            } catch(e) { alert(e.message); }
+        };
+    </script>
+</body>
+</html>
